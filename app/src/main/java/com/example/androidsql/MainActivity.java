@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -23,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.zip.Inflater;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -72,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void storeDataInArray() {
-        Cursor cursor = libraryDB.readAllData();
+        Cursor cursor = libraryDB.readAllBooks();
         if (cursor.getCount() == 0) {  // Check if the cursor is empty
             noDataImage.setVisibility(View.VISIBLE);
             noDataTxt.setVisibility(View.VISIBLE);
@@ -108,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.deleteAll) {
+        if (item.getItemId() == R.id.menu_delete_all) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Delete All books");
             builder.setMessage("Are you sure you want to delete all books");
@@ -116,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     BookDatabaseHelper libraryDB = new BookDatabaseHelper(MainActivity.this);
-                    libraryDB.deleteAllData();
+                    libraryDB.deleteAllBooks();
 
                     startActivity(new Intent(MainActivity.this, MainActivity.class));
                     finish();
@@ -129,6 +127,10 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
             builder.create().show();
+        }
+        if(item.getItemId() == R.id.menu_item_profile) {
+            startActivity(new Intent(MainActivity.this, ProfileActivity.class));
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }

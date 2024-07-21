@@ -7,8 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-
 public class BookDatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "Library.db";
     private static final int DATABASE_VERSION = 1;
@@ -55,7 +53,7 @@ public class BookDatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    Cursor readAllData() {
+    Cursor readAllBooks() {
         Cursor cursor = null;
         String query = "SELECT * FROM " + TABLE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
@@ -65,14 +63,14 @@ public class BookDatabaseHelper extends SQLiteOpenHelper {
         return cursor;
     }
 
-    void updateData(String rowId, String title,String author,  String pages) {
+    void updateBookData(String bookId, String title, String author, String pages) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(COLUMN_TITLE, title);
         cv.put(COLUMN_AUTHOR, author);
         cv.put(COLUMN_PAGES, pages);
 
-        long result = db.update(TABLE_NAME, cv, "id=?", new String[]{rowId});
+        long result = db.update(TABLE_NAME, cv, "id=?", new String[]{bookId});
         if(result == -1) {
             Toast.makeText(context, "Failed to update", Toast.LENGTH_SHORT).show();
         }
@@ -81,7 +79,7 @@ public class BookDatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    void deleteSingleRow(String bookId) {
+    void deleteSingleBook(String bookId) {
         SQLiteDatabase database = getWritableDatabase();
         long result = database.delete(TABLE_NAME, "id=?", new String[]{bookId});
         if(result == -1) {
@@ -91,7 +89,7 @@ public class BookDatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    void deleteAllData() {
+    void deleteAllBooks() {
         SQLiteDatabase database = getWritableDatabase();
         database.execSQL("DELETE FROM " + TABLE_NAME);
     }

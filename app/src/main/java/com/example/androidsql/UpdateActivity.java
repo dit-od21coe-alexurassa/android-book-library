@@ -12,9 +12,6 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 public class UpdateActivity extends AppCompatActivity {
     EditText titleInput, authorInput, pagesInput;
@@ -45,7 +42,7 @@ public class UpdateActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 BookDatabaseHelper databaseHelper = new BookDatabaseHelper(UpdateActivity.this);
-                databaseHelper.updateData(id, titleInput.getText().toString(), authorInput.getText().toString(), pagesInput.getText().toString());
+                databaseHelper.updateBookData(id, titleInput.getText().toString(), authorInput.getText().toString(), pagesInput.getText().toString());
             }
         });
 
@@ -84,7 +81,7 @@ public class UpdateActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 BookDatabaseHelper bookDatabaseHelper = new BookDatabaseHelper(UpdateActivity.this);
-                bookDatabaseHelper.deleteSingleRow(id);
+                bookDatabaseHelper.deleteSingleBook(id);
                 finish();
 
             }
