@@ -1,12 +1,12 @@
 <resources>
-    <string name="app_name">AndroidSql</string>
+    <string name="app_name">BookLibrary</string>
     <string name="display_name">Display name</string>
     <string name="user_profile">User Profile</string>
     <string name="favourite_book">Your favourite book</string>
     <string name="email_address">Your email address</string>
     <string name="my_profile">My Profile</string>
     <string name="delete_all">Delete All</string>
-    <string name="BookLibrary">BookLibrary</string>
+    <string name="book_library">BookLibrary</string>
     <string name="enter_email">Enter email</string>
     <string name="enter_password">Enter password</string>
     <string name="login">Login</string>
@@ -16,4 +16,5 @@
     <string name="sign_up">SignUp</string>
     <string name="enter_full_name">Enter Full name</string>
     <string name="register_your_account">Register your Account</string>
+    <string name="sign_out">Sign out</string>
 </resources>

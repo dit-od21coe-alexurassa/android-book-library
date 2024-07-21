@@ -37,7 +37,7 @@
         style=""
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/BookLibrary"
+        android:text="@string/book_library"
         android:fontFamily="@font/montserrat_medium"
         android:textColor="@color/grey"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -48,7 +48,7 @@
         app:layout_constraintVertical_bias="0.016" />
 
     <EditText
-        android:id="@+id/sign_up_full_name"
+        android:id="@+id/signupFullName"
         style="@style/Input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -74,7 +74,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sign_up_full_name"
+        app:layout_constraintTop_toBottomOf="@+id/signupFullName"
         app:layout_constraintVertical_bias="0.082" />
 
     <EditText
@@ -129,7 +129,7 @@
             android:layout_marginEnd="5dp"
             android:text="Already have an account?"/>
         <TextView
-            android:id="@+id/or_login"
+            android:id="@+id/orLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/login"

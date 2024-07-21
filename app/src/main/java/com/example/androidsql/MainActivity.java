@@ -1,6 +1,5 @@
 package com.example.androidsql;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -20,6 +19,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
@@ -33,29 +34,39 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> bookId, bookTitle, bookAuthor, bookPages;
     BookAdapter bookAdapter;
 
+    FirebaseAuth mAuth;
+    FirebaseUser authUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
+        // init firebase auth and user
+        mAuth = FirebaseAuth.getInstance();
+        authUser = mAuth.getCurrentUser();
+
+        // check if user is authenticated
+        if(authUser == null) {
+            redirectToLogin();
+        }
+
+        // init views
         addButton = findViewById(R.id.floatingAddButton);
         recyclerView = findViewById(R.id.recyclerView);
 
 
-        addButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent addIntent = new Intent(MainActivity.this, AddActivity.class);
-                startActivity(addIntent);
-            }
+        addButton.setOnClickListener(v -> {
+            Intent addIntent = new Intent(MainActivity.this, AddActivity.class);
+            startActivity(addIntent);
         });
 
         this.libraryDB = new BookDatabaseHelper(MainActivity.this);
-        this.bookId = new ArrayList<String>();
-        this.bookTitle = new ArrayList<String>();
-        this.bookAuthor = new ArrayList<String>();
-        this.bookPages = new ArrayList<String>();
+        this.bookId = new ArrayList<>();
+        this.bookTitle = new ArrayList<>();
+        this.bookAuthor = new ArrayList<>();
+        this.bookPages = new ArrayList<>();
 
         // no data
         noDataImage = findViewById(R.id.noDataImage);
@@ -107,24 +118,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.menu_delete_all) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Delete All books");
-            builder.setMessage("Are you sure you want to delete all books");
-            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    BookDatabaseHelper libraryDB = new BookDatabaseHelper(MainActivity.this);
-                    libraryDB.deleteAllBooks();
+            AlertDialog.Builder builder = getBuilder();
+            builder.setNegativeButton("No", (dialog, which) -> {
 
-                    startActivity(new Intent(MainActivity.this, MainActivity.class));
-                    finish();
-                }
-            });
-            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-
-                }
             });
             builder.create().show();
         }
@@ -132,6 +128,30 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(MainActivity.this, ProfileActivity.class));
             finish();
         }
+        if(item.getItemId() == R.id.menu_item_sign_out) {
+            // sign-out current user
+            mAuth.signOut();
+            redirectToLogin();
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private AlertDialog.Builder getBuilder() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Delete All books");
+        builder.setMessage("Are you sure you want to delete all books");
+        builder.setPositiveButton("Yes", (dialog, which) -> {
+            BookDatabaseHelper libraryDB = new BookDatabaseHelper(MainActivity.this);
+            libraryDB.deleteAllBooks();
+
+            startActivity(new Intent(MainActivity.this, MainActivity.class));
+            finish();
+        });
+        return builder;
+    }
+
+    private void redirectToLogin() {
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
     }
 }
